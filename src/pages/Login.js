@@ -26,7 +26,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await authenticate({ email, password });
+      const response = await authenticate( email, password );
       const { token, firstname, lastname, email: userEmail } = response;
       login({ firstname, lastname, email: userEmail }, token);
       navigate("/dashboard");
