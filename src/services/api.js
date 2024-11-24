@@ -1,11 +1,10 @@
 import apiClient from "./apiClient";
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 export const authenticate = async (email, password) => {
-  const response = await apiClient.post(`${API_URL}/auth/authenticate`, {email, password});
-  const token = response.data.token;
+  const response = await apiClient.post('/auth/authenticate', {email, password});
+  const { token, name, email: userEmail } = response.data;
   localStorage.setItem('token', token);
+  localStorage.setItem('user', JSON.stringify({ name, email: userEmail }));
   console.log("login successful");
   return response.data;
 }

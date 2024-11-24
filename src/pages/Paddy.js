@@ -10,6 +10,7 @@ import {
     TableCell,
     TableBody,
     Paper,
+    Divider,
 } from '@mui/material';
 import { useState, useEffect, useCallback } from 'react';
 import { getPaddies } from '../services/api';
@@ -18,15 +19,15 @@ const Paddy = () => {
     const [paddyData, setPaddyData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
-    const [size] = useState(10);
+    const [size] = useState(5);
     const [totalPages, setTotalPages] = useState(1);
 
     const fetchPaddy = useCallback(
         async (pageNumber) => {
             setLoading(true);
             try {
-                const response = await getPaddies(pageNumber - 1, size); // API uses zero-based page indexing
-                setPaddyData(response.content); // Assuming API returns { content: [], totalPages: n }
+                const response = await getPaddies(pageNumber - 1, size);
+                setPaddyData(response.content);
                 setTotalPages(response.totalPages);
             } catch (error) {
                 console.error('Error fetching paddy data:', error.message);
@@ -34,24 +35,24 @@ const Paddy = () => {
                 setLoading(false);
             }
         },
-        [size] // `size` is a dependency because it's used inside fetchPaddy
+        [size]
     );
 
-    // Initial data fetch
     useEffect(() => {
         fetchPaddy(page);
     }, [fetchPaddy, page]);
 
-    // Handle page change
     const handlePageChange = (_, value) => {
         setPage(value);
     };
 
     return (
         <Box sx={{ padding: 4 }}>
-            <Typography variant="h5" sx={{ marginBottom: 3 }}>
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>
                 Paddy Inventory
             </Typography>
+
+            <Divider sx={{ marginBottom: 3 }} />
 
             {/* Show loading spinner */}
             {loading ? (
